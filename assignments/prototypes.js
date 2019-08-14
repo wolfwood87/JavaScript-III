@@ -36,11 +36,13 @@ function CharacterStats(charAttr) {
   this.healthpoints = charAttr.healthpoints;
 }
 
+CharacterStats.prototype = Object.create(GameObject.prototype);
+
 CharacterStats.prototype.takeDamage = function () {
   return `${this.name} took damage.`;
 }
 
-CharacterStats.prototype = Object.create(GameObject.prototype);
+
 
 /*
   === Humanoid (Having an appearance or character resembling that of a human.) ===
@@ -57,10 +59,13 @@ CharacterStats.prototype = Object.create(GameObject.prototype);
    this.weapons = humStats.weapons;
    this.language = humStats.language;
  }
+Humanoid.prototype = Object.create(CharacterStats.prototype);
 
- Humanoid.prototype.greet = function () {
+Humanoid.prototype.greet = function () {
   return `${this.name} offers a greeting in ${this.language}.`;
 }
+
+
 /*
   * Inheritance chain: GameObject -> CharacterStats -> Humanoid
   * Instances of Humanoid should have all of the same properties as CharacterStats and GameObject.
