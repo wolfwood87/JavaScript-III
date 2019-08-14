@@ -33,7 +33,7 @@ GameObject.prototype.destroy = function () {
 */
 function CharacterStats(charAttr) {
   GameObject.call(this, charAttr);
-  this.healthpoints = charAttr.healthpoints;
+  this.healthPoints = charAttr.healthPoints;
 }
 
 CharacterStats.prototype = Object.create(GameObject.prototype);
