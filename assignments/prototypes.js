@@ -96,7 +96,7 @@ Hero.prototype.attack = function (att1, att2) {
       return att2.destroy();
     }
     else{
-      return "Villain has " + att2.healthPoints + " health remaining";
+      return `${att2.name} has ` + att2.healthPoints + ` health remaining`;
     }
   }
 }
@@ -109,7 +109,7 @@ Hero.prototype.heal = function (att) {
   }
   else{
     this.healthPoints = att.healthPoints + heal;
-    return "Hero has healed and now has " + this.healthPoints + " health remaining.";
+    return `${this.name} has healed and now has ` + this.healthPoints + ` health remaining.`;
   }
 }
 
@@ -131,7 +131,7 @@ Villain.prototype.attack = function (att1, att2) {
       return att2.destroy();
     }
     else{
-      return "Hero has " + att2.healthPoints + " health remaining";
+      return `${att2.name} has ` + att2.healthPoints + ` health remaining`;
     }
   }
 }
@@ -144,7 +144,7 @@ Villain.prototype.heal = function (att) {
   }
   else{
     this.healthPoints = att.healthPoints + heal;
-    return "Villain has healed and now has " + this.healthPoints + " health remaining.";
+    return `${this.name} has healed and now has ` + this.healthPoints + ` health remaining.`;
   }
 }
 /*
