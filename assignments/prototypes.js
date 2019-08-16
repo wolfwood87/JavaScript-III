@@ -71,7 +71,7 @@ function Hero(good) {
   Humanoid.call(this, good);
 }
 
-Hero.protype = Object.create(Humanoid.prototype);
+Hero.prototype = Object.create(Humanoid.prototype);
 
 function Villain(bad) {
   Humanoid.call(this, bad);
@@ -80,10 +80,9 @@ function Villain(bad) {
 Villain.prototype = Object.create(Humanoid.prototype);
 
 Hero.prototype.attack = function (att1, att2) {
-  let damage = Math.floor((Math.random() * 5) + 1);
+  const damage = Math.floor((Math.random() * 5) + 1);
   this.goodhealth = att1.healthPoints;
   this.badhealth = att2.healthPoints;
-  this.destroy = att2.destroy;
   if(this.goodhealth <= 0){
     return "Dead people can't attack";
   }
@@ -92,22 +91,33 @@ Hero.prototype.attack = function (att1, att2) {
   }
   else{
     att2.healthPoints = this.badhealth - damage;
-    if(this.badhealth <= 0) {
-      return this.destroy();
+
+    if(att2.healthPoints <= 0){
+      return att2.destroy();
     }
     else{
-      return "Villain has " + att2.healthPoints + " remaining";
+      return "Villain has " + att2.healthPoints + " health remaining";
     }
   }
 }
 
+Hero.prototype.heal = function (att) {
+  const heal = Math.floor((Math.random() * 10) + 1);
+  
+  if(this.healthPoints <=0) {
+    return "Dead people can't heal";
+  }
+  else{
+    this.healthPoints = att.healthPoints + heal;
+    return "Hero has healed and now has " + this.healthPoints + " health remaining.";
+  }
+}
 
 
 Villain.prototype.attack = function (att1, att2) {
-  let damage = Math.floor((Math.random() * 5) + 1);
-  this.goodhealth = att2.healthPoints;
+  const damage = Math.floor((Math.random() * 5) + 1);
   this.badhealth = att1.healthPoints;
-  this.destroy = att2.destroy;
+  this.goodhealth = att2.healthPoints;
   if(this.badhealth <= 0){
     return "Dead people can't attack";
   }
@@ -116,11 +126,25 @@ Villain.prototype.attack = function (att1, att2) {
   }
   else{
     att2.healthPoints = this.goodhealth - damage;
-    if (this.goodhealth <= 0) {
-      return this.destroy();
+
+    if(att2.healthPoints <= 0){
+      return att2.destroy();
     }
-    else {return "Hero has " + att2.healthPoints + " remaining";
+    else{
+      return "Hero has " + att2.healthPoints + " health remaining";
     }
+  }
+}
+
+Villain.prototype.heal = function (att) {
+  const heal = Math.floor((Math.random() * 10) + 1);
+  
+  if(this.healthPoints <=0) {
+    return "Dead people can't heal";
+  }
+  else{
+    this.healthPoints = att.healthPoints + heal;
+    return "Villain has healed and now has " + this.healthPoints + " health remaining.";
   }
 }
 /*
@@ -232,18 +256,20 @@ Villain.prototype.attack = function (att1, att2) {
     ],
     language: 'Common Tongue',
   });
-
+  console.log(goldlight.weapons);
+  console.log(evillaugh.weapons);
   console.log(goldlight.attack(goldlight, evillaugh));
   console.log(evillaugh.attack(evillaugh, goldlight));
   console.log(goldlight.attack(goldlight, evillaugh));
   console.log(evillaugh.attack(evillaugh, goldlight));
   console.log(goldlight.attack(goldlight, evillaugh));
-  console.log(evillaugh.attack(evillaugh, goldlight));
+  console.log(evillaugh.heal(evillaugh));
+  // console.log(evillaugh.attack(evillaugh, goldlight));
   console.log(goldlight.attack(goldlight, evillaugh));
   console.log(evillaugh.attack(evillaugh, goldlight));
   console.log(goldlight.attack(goldlight, evillaugh));
   console.log(evillaugh.attack(evillaugh, goldlight));
-  console.log(goldlight.attack(goldlight, evillaugh));
+  console.log(goldlight.heal(goldlight));
+  // console.log(goldlight.attack(goldlight, evillaugh));
   console.log(evillaugh.attack(evillaugh, goldlight));
-  console.log(goldlight.attack(goldlight, evillaugh));
   console.log(evillaugh.attack(evillaugh, goldlight));
