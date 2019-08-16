@@ -15,6 +15,15 @@
   * dimensions (These represent the character's size in the video game)
   * destroy() // prototype method that returns: `${this.name} was removed from the game.`
 */
+function GameObject(obj) {
+  this.createdAt = obj.createdAt;
+  this.name = obj.name;
+  this.dimensions = obj.dimensions;
+  
+}
+GameObject.prototype.destroy = function () {
+  return `${this.name} was removed from the game`;
+}
 
 /*
   === CharacterStats ===
@@ -22,6 +31,18 @@
   * takeDamage() // prototype method -> returns the string '<object name> took damage.'
   * should inherit destroy() from GameObject's prototype
 */
+function CharacterStats(charAttr) {
+  GameObject.call(this, charAttr);
+  this.healthPoints = charAttr.healthPoints;
+}
+
+CharacterStats.prototype = Object.create(GameObject.prototype);
+
+CharacterStats.prototype.takeDamage = function () {
+  return `${this.name} took damage.`;
+}
+
+
 
 /*
   === Humanoid (Having an appearance or character resembling that of a human.) ===
@@ -32,7 +53,76 @@
   * should inherit destroy() from GameObject through CharacterStats
   * should inherit takeDamage() from CharacterStats
 */
- 
+ function Humanoid(humStats) {
+   CharacterStats.call(this, humStats);
+   this.team = humStats.team;
+   this.weapons = humStats.weapons;
+   this.language = humStats.language;
+ }
+Humanoid.prototype = Object.create(CharacterStats.prototype);
+
+Humanoid.prototype.greet = function () {
+  return `${this.name} offers a greeting in ${this.language}.`;
+}
+
+
+
+function Hero(good) {
+  Humanoid.call(this, good);
+}
+
+Hero.protype = Object.create(Humanoid.prototype);
+
+function Villain(bad) {
+  Humanoid.call(this, bad);
+}
+
+Villain.prototype = Object.create(Humanoid.prototype);
+
+Hero.prototype.attack = function (att1, att2) {
+  let damage = Math.floor((Math.random() * 5) + 1);
+  this.goodhealth = att1.healthPoints;
+  this.badhealth = att2.healthPoints;
+  this.destroy = att2.destroy;
+  if(this.goodhealth <= 0){
+    return "Dead people can't attack";
+  }
+  else if(this.badhealth <= 0){
+    return `${this.name} wins!`;
+  }
+  else{
+    att2.healthPoints = this.badhealth - damage;
+    if(this.badhealth <= 0) {
+      return this.destroy();
+    }
+    else{
+      return "Villain has " + att2.healthPoints + " remaining";
+    }
+  }
+}
+
+
+
+Villain.prototype.attack = function (att1, att2) {
+  let damage = Math.floor((Math.random() * 5) + 1);
+  this.goodhealth = att2.healthPoints;
+  this.badhealth = att1.healthPoints;
+  this.destroy = att2.destroy;
+  if(this.badhealth <= 0){
+    return "Dead people can't attack";
+  }
+  else if(this.goodhealth <= 0){
+    return `${this.name} wins!`;
+  }
+  else{
+    att2.healthPoints = this.goodhealth - damage;
+    if (this.goodhealth <= 0) {
+      return this.destroy();
+    }
+    else {return "Hero has " + att2.healthPoints + " remaining";
+    }
+  }
+}
 /*
   * Inheritance chain: GameObject -> CharacterStats -> Humanoid
   * Instances of Humanoid should have all of the same properties as CharacterStats and GameObject.
@@ -41,7 +131,7 @@
 
 // Test you work by un-commenting these 3 objects and the list of console logs below:
 
-/*
+
   const mage = new Humanoid({
     createdAt: new Date(),
     dimensions: {
@@ -102,9 +192,58 @@
   console.log(archer.greet()); // Lilith offers a greeting in Elvish.
   console.log(mage.takeDamage()); // Bruce took damage.
   console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
-*/
+
 
   // Stretch task: 
   // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
   // * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
   // * Create two new objects, one a villain and one a hero and fight it out with methods!
+
+  const goldlight = new Hero({
+    createdAt: new Date(),
+    dimensions: {
+      length: 2,
+      width: 2,
+      height: 2,
+    },
+    healthPoints: 15,
+    name: 'Hero Heroson',
+    team: 'The Round Table',
+    weapons: [
+      'Giant Sword',
+      'Shield',
+    ],
+    language: 'Common Tongue',
+  });
+
+  const evillaugh = new Villain({
+    createdAt: new Date(),
+    dimensions: {
+      length: 2,
+      width: 2,
+      height: 2,
+    },
+    healthPoints: 15,
+    name: 'Evil Villain Guy',
+    team: 'The Round Table',
+    weapons: [
+      'Giant Sword',
+      'Shield',
+    ],
+    language: 'Common Tongue',
+  });
+
+  console.log(goldlight.attack(goldlight, evillaugh));
+  console.log(evillaugh.attack(evillaugh, goldlight));
+  console.log(goldlight.attack(goldlight, evillaugh));
+  console.log(evillaugh.attack(evillaugh, goldlight));
+  console.log(goldlight.attack(goldlight, evillaugh));
+  console.log(evillaugh.attack(evillaugh, goldlight));
+  console.log(goldlight.attack(goldlight, evillaugh));
+  console.log(evillaugh.attack(evillaugh, goldlight));
+  console.log(goldlight.attack(goldlight, evillaugh));
+  console.log(evillaugh.attack(evillaugh, goldlight));
+  console.log(goldlight.attack(goldlight, evillaugh));
+  console.log(evillaugh.attack(evillaugh, goldlight));
+  console.log(goldlight.attack(goldlight, evillaugh));
+  console.log(evillaugh.attack(evillaugh, goldlight));
